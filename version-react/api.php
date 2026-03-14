@@ -1,9 +1,15 @@
 <?php
-// Autoriser les requêtes provenant de ton application React (CORS)
+// Autoriser les requêtes provenant de React (port 3000)
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Accept, Authorization, X-Requested-With");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+// Répondre immédiatement aux requêtes préliminaires (preflight)
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 // Configuration BDD
 $host = "localhost";
@@ -13,8 +19,6 @@ $pass = "";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-
-    // Récupérer les données envoyées par React
     $data = json_decode(file_get_contents("php://input"));
 
     if (!empty($data->email) && !empty($data->nom)) {
@@ -23,7 +27,7 @@ try {
 
         if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
             // Notification Email [cite: 48]
-            mail("codeclic@univ-lyon1.fr", "Nouvelle inscription via React", "Candidat : " . $data->prenom . " " . $data->nom);
+            mail("codeclic@univ-lyon1.fr", "Nouvelle inscription Code-Clic", "Candidat : " . $data->prenom . " " . $data->nom);
 
             http_response_code(201);
             echo json_encode(["message" => "Inscription réussie"]);
