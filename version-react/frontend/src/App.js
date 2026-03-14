@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-// Séparation des icônes pour une meilleure lecture du compilateur
 const icons = ["🎤", "🩺", "💡", "🛠️", "🤝"];
 
 function App() {
@@ -20,157 +19,106 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Tentative d'envoi des données :", formData);
+    const apiUrl = 'http://localhost/codeclic/codeclic/version-react/api/api.php';
+
     try {
-      /*const response = await fetch('http://localhost/version-react/api/api.php', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
-      });*/
-      //Note: Utilise l'URL complète de ton serveur local (ex: http://localhost/codeclic/...)
-      const response = await fetch('http://localhost/codeclic/codeclic/version-react/api/api.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(formData),
       });
       const result = await response.json();
-      if (response.ok) {
-        console.log("Succès BDD :", result.message);
+      if (response.ok && result.status === "success") {
         setSent(true);
       } else {
-        alert("Erreur serveur : " + result.message);
+        alert("Erreur : " + result.message);
       }
     } catch (error) {
-      console.error("Erreur de connexion ! Vérifie que XAMPP est lancé et que l'URL de l'API est correcte.");
-      alert("Impossible de contacter l'API. Vérifie la console (F12).");
+      alert("Impossible de joindre l'API. Vérifiez que XAMPP est lancé.");
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-[#00818a] selection:text-white">
-
-      {/* HEADER : Identité visuelle Lyon 1 / HCL / MD101 */}
-      <header className="relative bg-[#00818a] text-white py-20 px-6 overflow-hidden">
-        <div className="max-w-6xl mx-auto relative z-10 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-6xl font-black mb-4 tracking-tight">
-            CODE-CLIC
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-2xl font-light max-w-2xl mx-auto">
-            Conception d'outils numériques en santé [cite: 6]
-          </motion.p>
-        </div>
+      {/* HEADER : Lyon 1 / HCL / MD101 */}
+      <header className="bg-[#00818a] text-white py-16 px-6 text-center shadow-lg">
+        <motion.h1 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-5xl font-black mb-4 uppercase tracking-wider">CODE-CLIC</motion.h1>
+        <p className="text-xl font-light opacity-90">Conception d'outils numériques en santé</p>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-12 gap-12">
-
-        {/* SECTION CONTENU : Objectifs et Modules [cite: 8, 11, 18] */}
+      <main className="max-w-7xl mx-auto px-6 py-12 grid lg:grid-cols-12 gap-12">
+        {/* SECTION INFOS : Contenu stratégique du PDF */}
         <div className="lg:col-span-7 space-y-12">
           <section>
-            <h2 className="text-3xl font-bold text-[#00818a] mb-6">Objectifs de la formation</h2>
+            <h2 className="text-3xl font-bold text-[#00818a] mb-6 tracking-tight">Pourquoi Code-Clic ?</h2>
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 space-y-4 text-slate-600">
-              <p>• Renforcer la formation au numérique des professionnels de santé[cite: 8].</p>
-              <p>• Proposer un parcours inclusif et innovant par la pratique[cite: 12].</p>
-              <p>• Mobiliser l'écosystème : UCBL1, HCL, ARS-ARA, GCS Sara[cite: 10].</p>
+              <p>• Renforcer la formation au numérique des professionnels de santé (feuille de route 2023-2027).</p>
+              <p>• Concevoir des outils numériques en réponse aux besoins du terrain.</p>
+              <p>• Mobiliser l'écosystème : UCBL1, HCL, ARS-ARA, GCS Sara.</p>
             </div>
           </section>
 
           <section className="bg-slate-900 text-white p-8 rounded-[2rem] shadow-xl">
-            <h2 className="text-2xl font-bold mb-8">Programme (2 demi-journées) [cite: 24]</h2>
-            <div className="space-y-4">
+            <h2 className="text-2xl font-bold mb-8">Les Modules (2 demi-journées)</h2>
+            <div className="grid gap-4">
               {modules.map((m, i) => (
                 <div key={i} className="flex items-center p-4 bg-white/5 rounded-2xl border border-white/10">
                   <span className="text-2xl mr-4">{icons[i]}</span>
-                  <span className="text-lg opacity-90">{i + 1}. {m} [cite: 19, 20, 21, 22]</span>
+                  <span className="text-lg opacity-90">{i + 1}. {m}</span>
                 </div>
               ))}
             </div>
           </section>
         </div>
 
-        {/* SECTION FORMULAIRE : Publics concernés  */}
+        {/* SECTION FORMULAIRE : Publics concernés */}
         <div className="lg:col-span-5">
           <div className="sticky top-8 bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-100">
-            <h3 className="text-2xl font-bold mb-6">Demande d'inscription</h3>
-
+            <h3 className="text-2xl font-bold mb-6 text-slate-800">Inscription</h3>
             {sent ? (
-              <div className="text-center py-8 bg-green-50 rounded-2xl text-green-700">
-                <p className="text-4xl mb-2">✅</p>
-                <p className="font-bold">Demande transmise !</p>
-              </div>
+              <div className="text-center py-10 bg-green-50 rounded-2xl text-green-700 font-bold uppercase tracking-widest">✅ Demande transmise !</div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <input type="text" placeholder="Prénom" required className="w-full p-4 bg-slate-50 rounded-xl outline-none"
-                  onChange={(e) => setFormData({ ...formData, prenom: e.target.value })} />
-
-                <input type="text" placeholder="Nom" required className="w-full p-4 bg-slate-50 rounded-xl outline-none"
-                  onChange={(e) => setFormData({ ...formData, nom: e.target.value })} />
-
-                <input type="email" placeholder="Email" required className="w-full p-4 bg-slate-50 rounded-xl outline-none"
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-
-                <select className="w-full p-4 bg-slate-50 rounded-xl outline-none"
-                  onChange={(e) => setFormData({ ...formData, statut: e.target.value })}>
-                  <option value="salarie">Salarié / Alternant [cite: 16]</option>
-                  <option value="demandeur">Demandeur d'emploi [cite: 17]</option>
-                  <option value="secteur">Secteur Public ou Privé [cite: 17]</option>
+                <input type="text" placeholder="Prénom" required className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]" onChange={(e) => setFormData({ ...formData, prenom: e.target.value })} />
+                <input type="text" placeholder="Nom" required className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]" onChange={(e) => setFormData({ ...formData, nom: e.target.value })} />
+                <input type="email" placeholder="Email professionnel" required className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]" onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+                <select className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]" onChange={(e) => setFormData({ ...formData, statut: e.target.value })}>
+                  <option value="salarie">Salarié / Alternant / Jeune diplômé</option>
+                  <option value="demandeur">Demandeur d'emploi</option>
+                  <option value="secteur">Secteur Public ou Privé</option>
                 </select>
-
-                <textarea placeholder="Votre besoin terrain[cite: 9]..." className="w-full p-4 bg-slate-50 rounded-xl h-24 outline-none"
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}></textarea>
-
-                <button type="submit" className="w-full bg-[#00818a] text-white py-4 rounded-xl font-bold hover:bg-[#005f66] transition-all">
-                  S'inscrire à la formation
-                </button>
+                <textarea placeholder="Votre besoin ou projet terrain..." className="w-full p-4 bg-slate-50 rounded-xl h-24 outline-none focus:ring-2 focus:ring-[#00818a]" onChange={(e) => setFormData({ ...formData, message: e.target.value })}></textarea>
+                <button type="submit" className="w-full bg-[#00818a] text-white py-4 rounded-xl font-bold hover:shadow-lg transition-all active:scale-95 uppercase tracking-widest">S'inscrire</button>
               </form>
             )}
-            <p className="mt-6 text-center text-xs text-slate-400 font-medium">Obtenir un certificat Qualiopi/DPC [cite: 14]</p>
+            <p className="mt-6 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">Qualiopi / DPC</p>
           </div>
         </div>
       </main>
 
-      <footer className="bg-white border-t border-slate-200 py-12 text-center">
-        <p className="text-sm text-slate-500 italic">Contact : codeclic@univ-lyon1.fr [cite: 48]</p>
-      </footer>
-      <footer className="bg-white border-t border-slate-200 py-16">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] mb-10">
-            Projet soutenu par l'écosystème régional
-          </p>
-
-          {/* Grille des partenaires [cite: 10, 30] */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-700">
-            <span className="text-sm font-bold">Lyon 1 Université</span> [cite: 1, 31]
-            <span className="text-sm font-bold">HCL</span> [cite: 2, 40]
-            <span className="text-sm font-bold">MD101</span> [cite: 3, 42]
-            <span className="text-sm font-bold">ARS ARA</span> [cite: 45]
-            <span className="text-sm font-bold">GCS SARA</span> [cite: 46]
-            <span className="text-sm font-bold">GCS HOURAA</span> [cite: 52]
+      {/* FOOTER INSTITUTIONNEL : Partenaires Lyon 1, HCL, ARS, etc. */}
+      <footer className="bg-white border-t border-slate-200 py-16 px-6 text-center">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-10">Partenaires de la formation</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+            <span className="text-xs font-bold">LYON 1</span>
+            <span className="text-xs font-bold">HCL</span>
+            <span className="text-xs font-bold">MD101</span>
+            <span className="text-xs font-bold">ARS-ARA</span>
+            <span className="text-xs font-bold">GCS SARA</span>
+            <span className="text-xs font-bold">GCS HOURAA</span>
           </div>
-
-          <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-semibold">PRÉFÈTE DE RÉGION</span> [cite: 50]
-              <span className="text-xs font-semibold">FRANCE 2030</span> [cite: 51]
-              <span className="text-xs font-semibold">LA RÉGION AUVERGNE-RHÔNE-ALPES</span> [cite: 53, 54]
+          <div className="mt-16 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="flex gap-8 text-[9px] font-black text-slate-400">
+              <span>PRÉFÈTE DE RÉGION</span>
+              <span>FRANCE 2030</span>
+              <span>LA RÉGION AUVERGNE-RHÔNE-ALPES</span>
             </div>
-            <p className="text-slate-500 text-sm italic">
-              Contact : <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] font-bold">codeclic@univ-lyon1.fr</a> [cite: 48]
-            </p>
+            <p className="text-sm text-slate-500 font-medium">Contact : codeclic@univ-lyon1.fr</p>
           </div>
         </div>
       </footer>
     </div>
-
   );
 }
 
