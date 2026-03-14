@@ -1,18 +1,17 @@
 <?php
-// --- CONFIGURATION CORS ROBUSTE ---
-header("Access-Control-Allow-Origin: http://localhost:3000"); // Autorise seulement ton app React
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Accept, Authorization, X-Requested-With");
-header("Access-Control-Allow-Credentials: true");
+// 1. Autoriser React (port 3000) et gérer la vérification "Preflight"
+header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Accept");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Réponse immédiate pour la requête de vérification (Preflight) du navigateur
+// Si le navigateur demande juste la permission (OPTIONS), on répond OK et on s'arrête là
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-// --- CONNEXION BDD ---
+// 2. Configuration BDD
 $host = "localhost";
 $dbname = "codeclic";
 $user = "root";
@@ -21,18 +20,17 @@ $pass = "";
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
 
-    // Récupération des données envoyées par React
+    // Récupérer les données JSON de React
     $json = file_get_contents("php://input");
     $data = json_decode($json);
 
     if (!empty($data->email) && !empty($data->nom)) {
-        // Insertion conforme aux besoins du flyer (Salariés, Alternants, etc.) [cite: 15, 16]
         $sql = "INSERT INTO inscriptions_codeclic (nom, prenom, email, statut, message) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
 
         if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
-            // Notification mail au support mentionné dans le flyer [cite: 48]
-            mail("support@mdxp.io", "Nouvelle inscription Code-Clic", "Candidat : " . $data->prenom . " " . $data->nom);
+            // Optionnel : Notification email conforme au flyer 
+            @mail("support@mdxp.io", "Nouvelle inscription", "Candidat : " . $data->prenom . " " . $data->nom);
 
             echo json_encode(["status" => "success", "message" => "Inscription réussie"]);
         } else {
@@ -45,6 +43,5 @@ try {
     }
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Lien BDD échoué : " . $e->getMessage()]);
+    echo json_encode(["status" => "error", "message" => "Connexion échouée"]);
 }
-?>
