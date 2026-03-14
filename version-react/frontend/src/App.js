@@ -27,8 +27,8 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });*/
-      // Note: Utilise l'URL complète de ton serveur local (ex: http://localhost/codeclic/...)
-      const response = await fetch('http://localhost/version-react/api.php', {
+      //Note: Utilise l'URL complète de ton serveur local (ex: http://localhost/codeclic/...)
+      const response = await fetch('http://localhost/codeclic/codeclic/version-react/api/api.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

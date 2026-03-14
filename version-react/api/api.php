@@ -1,8 +1,18 @@
 <?php
-// export.php - À placer dans le dossier /api
-header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename=inscriptions_codeclic_' . date('Y-m-d') . '.csv');
+// --- CONFIGURATION CORS ROBUSTE ---
+header("Access-Control-Allow-Origin: http://localhost:3000"); // Autorise seulement ton app React
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Accept, Authorization, X-Requested-With");
+header("Access-Control-Allow-Credentials: true");
+header("Content-Type: application/json; charset=UTF-8");
 
+// Réponse immédiate pour la requête de vérification (Preflight) du navigateur
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+// --- CONNEXION BDD ---
 $host = "localhost";
 $dbname = "codeclic";
 $user = "root";
@@ -10,20 +20,31 @@ $pass = "";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-    $query = $pdo->query("SELECT nom, prenom, email, statut, message, date_inscription FROM inscriptions_codeclic ORDER BY date_inscription DESC");
 
-    $output = fopen('php://output', 'w');
-    // Ajout du BOM pour la compatibilité des accents sous Excel
-    fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
+    // Récupération des données envoyées par React
+    $json = file_get_contents("php://input");
+    $data = json_decode($json);
 
-    // En-têtes basés sur le flyer [cite: 15, 18]
-    fputcsv($output, array('Nom', 'Prénom', 'Email', 'Statut', 'Message/Projet', 'Date Inscription'));
+    if (!empty($data->email) && !empty($data->nom)) {
+        // Insertion conforme aux besoins du flyer (Salariés, Alternants, etc.) [cite: 15, 16]
+        $sql = "INSERT INTO inscriptions_codeclic (nom, prenom, email, statut, message) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $pdo->prepare($sql);
 
-    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-        fputcsv($output, $row);
+        if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
+            // Notification mail au support mentionné dans le flyer [cite: 48]
+            mail("codeclic@univ-lyon1.fr", "Nouvelle inscription Code-Clic", "Candidat : " . $data->prenom . " " . $data->nom);
+
+            echo json_encode(["status" => "success", "message" => "Inscription réussie"]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "message" => "Erreur BDD"]);
+        }
+    } else {
+        http_response_code(400);
+        echo json_encode(["status" => "error", "message" => "Données incomplètes"]);
     }
-    fclose($output);
 } catch (PDOException $e) {
-    die("Erreur : " . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(["status" => "error", "message" => "Lien BDD échoué : " . $e->getMessage()]);
 }
 ?>
