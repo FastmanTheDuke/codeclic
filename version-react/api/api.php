@@ -1,17 +1,19 @@
 <?php
-// 1. Autoriser React (port 3000) et gérer la vérification "Preflight"
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php'; // Charge PHPMailer via Composer
+
 header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Accept");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Si le navigateur demande juste la permission (OPTIONS), on répond OK et on s'arrête là
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-// 2. Configuration BDD
 $host = "localhost";
 $dbname = "codeclic";
 $user = "root";
@@ -19,31 +21,50 @@ $pass = "";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-
-    // Récupérer les données JSON de React
-    $json = file_get_contents("php://input");
-    $data = json_decode($json);
+    $data = json_decode(file_get_contents("php://input"));
 
     if (!empty($data->email) && !empty($data->nom)) {
         $sql = "INSERT INTO inscriptions_codeclic (nom, prenom, email, statut, message) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
 
         if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
-            // Optionnel : Notification email conforme au flyer 
-            // @mail("support@mdxp.io", "Nouvelle inscription", "Candidat : " . $data->prenom . " " . $data->nom);
-            $to = "support@mdxp.io"; //
-            $subject = "Nouvelle inscription Code-Clic";
-            $body = "Candidat : " . $data->prenom . " " . $data->nom . "\nStatut : " . $data->statut;
 
-            // Vérification du succès de la fonction mail
-            $mail_sent = @mail($to, $subject, $body);
+            // --- ENVOI DE L'EMAIL VIA PHPMAILER ---
+            $mail = new PHPMailer(true);
+            try {
+                // Paramètres du serveur (Exemple Mailtrap ou Gmail)
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Remplacez par votre hôte
+                $mail->SMTPAuth = true;
+                $mail->Username = 'support@mdxp.io';      // Remplacez par votre user
+                $mail->Password = 'Fast4ward%030881';  // Remplacez par votre pass
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+
+                // Destinataires
+                $mail->setFrom('no-reply@mdxp.io', 'Code-Clic Plateforme');
+                $mail->addAddress('support@mdxp.io'); // Email de réception
+
+                // Contenu
+                $mail->isHTML(true);
+                $mail->Subject = "Nouvelle demande d'inscription - Code-Clic";
+                $mail->Body = "<h3>Nouvelle inscription reçue</h3>
+                                  <p><b>Nom :</b> {$data->prenom} {$data->nom}</p>
+                                  <p><b>Email :</b> {$data->email}</p>
+                                  <p><b>Statut :</b> {$data->statut}</p>
+                                  <p><b>Message :</b><br>{$data->message}</p>";
+
+                $mail->send();
+                $emailStatus = "Email envoyé";
+            } catch (Exception $e) {
+                $emailStatus = "Erreur email : {$mail->ErrorInfo}";
+            }
 
             echo json_encode([
                 "status" => "success",
                 "message" => "Inscription réussie",
-                "mail_status" => $mail_sent ? "Envoyé" : "Erreur configuration serveur mail"
+                "debug_mail" => $emailStatus
             ]);
-            // echo json_encode(["status" => "success", "message" => "Inscription réussie"]);
         } else {
             http_response_code(500);
             echo json_encode(["status" => "error", "message" => "Erreur BDD"]);
@@ -54,5 +75,5 @@ try {
     }
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Connexion échouée"]);
+    echo json_encode(["status" => "error", "message" => "Connexion BDD échouée"]);
 }
