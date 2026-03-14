@@ -32,7 +32,7 @@ try {
 
         if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
             // Notification mail au support mentionné dans le flyer [cite: 48]
-            mail("codeclic@univ-lyon1.fr", "Nouvelle inscription Code-Clic", "Candidat : " . $data->prenom . " " . $data->nom);
+            mail("support@mdxp.io", "Nouvelle inscription Code-Clic", "Candidat : " . $data->prenom . " " . $data->nom);
 
             echo json_encode(["status" => "success", "message" => "Inscription réussie"]);
         } else {
