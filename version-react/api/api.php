@@ -37,7 +37,7 @@ try {
                 $mail->Host = 'smtp.gmail.com'; // Remplacez par votre hôte
                 $mail->SMTPAuth = true;
                 $mail->Username = 'support@mdxp.io';      // Remplacez par votre user
-                $mail->Password = 'Fast4ward%030881';  // Remplacez par votre pass
+                $mail->Password = 'bszophzxgwliqian';  // Remplacez par votre pass
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
