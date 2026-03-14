@@ -35,8 +35,10 @@ function App() {
     }
 
     setLoading(true);
-    const apiUrl = 'http://localhost/codeclic/codeclic/version-react/api/api.php';
-
+    //const apiUrl = 'http://localhost/codeclic/codeclic/version-react/api/api.php';
+    const apiUrl = window.location.hostname === "localhost"
+      ? 'http://localhost/codeclic/codeclic/version-react/api/api.php' // URL de test
+      : 'https://votre-domaine.fr/api/api.php'; // URL réelle en ligne
     try {
       const response = await fetch(apiUrl, {
         method: 'POST',
