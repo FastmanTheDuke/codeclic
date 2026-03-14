@@ -20,17 +20,32 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Tentative d'envoi des données :", formData);
     try {
-      const response = await fetch('http://localhost/version-react/api/api.php', {
+      /*const response = await fetch('http://localhost/version-react/api/api.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+      });*/
+      // Note: Utilise l'URL complète de ton serveur local (ex: http://localhost/codeclic/...)
+      const response = await fetch('http://localhost/version-react/api.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData),
       });
+      const result = await response.json();
       if (response.ok) {
+        console.log("Succès BDD :", result.message);
         setSent(true);
+      } else {
+        alert("Erreur serveur : " + result.message);
       }
     } catch (error) {
-      console.error("Erreur de connexion à l'API:", error);
+      console.error("Erreur de connexion ! Vérifie que XAMPP est lancé et que l'URL de l'API est correcte.");
+      alert("Impossible de contacter l'API. Vérifie la console (F12).");
     }
   };
 

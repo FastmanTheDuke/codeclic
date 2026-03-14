@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* On définit ici la couleur du flyer pour Tailwind v4 */
+@theme {
+  --color-codeclic-blue: #00818a;
+}
