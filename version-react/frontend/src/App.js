@@ -126,7 +126,36 @@ function App() {
       <footer className="bg-white border-t border-slate-200 py-12 text-center">
         <p className="text-sm text-slate-500 italic">Contact : codeclic@univ-lyon1.fr [cite: 48]</p>
       </footer>
+      <footer className="bg-white border-t border-slate-200 py-16">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] mb-10">
+            Projet soutenu par l'écosystème régional
+          </p>
+
+          {/* Grille des partenaires [cite: 10, 30] */}
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-700">
+            <span className="text-sm font-bold">Lyon 1 Université</span> [cite: 1, 31]
+            <span className="text-sm font-bold">HCL</span> [cite: 2, 40]
+            <span className="text-sm font-bold">MD101</span> [cite: 3, 42]
+            <span className="text-sm font-bold">ARS ARA</span> [cite: 45]
+            <span className="text-sm font-bold">GCS SARA</span> [cite: 46]
+            <span className="text-sm font-bold">GCS HOURAA</span> [cite: 52]
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-semibold">PRÉFÈTE DE RÉGION</span> [cite: 50]
+              <span className="text-xs font-semibold">FRANCE 2030</span> [cite: 51]
+              <span className="text-xs font-semibold">LA RÉGION AUVERGNE-RHÔNE-ALPES</span> [cite: 53, 54]
+            </div>
+            <p className="text-slate-500 text-sm italic">
+              Contact : <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] font-bold">codeclic@univ-lyon1.fr</a> [cite: 48]
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
+
   );
 }
 
