@@ -30,9 +30,20 @@ try {
 
         if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
             // Optionnel : Notification email conforme au flyer 
-            @mail("support@mdxp.io", "Nouvelle inscription", "Candidat : " . $data->prenom . " " . $data->nom);
+            // @mail("support@mdxp.io", "Nouvelle inscription", "Candidat : " . $data->prenom . " " . $data->nom);
+            $to = "support@mdxp.io"; //
+            $subject = "Nouvelle inscription Code-Clic";
+            $body = "Candidat : " . $data->prenom . " " . $data->nom . "\nStatut : " . $data->statut;
 
-            echo json_encode(["status" => "success", "message" => "Inscription réussie"]);
+            // Vérification du succès de la fonction mail
+            $mail_sent = @mail($to, $subject, $body);
+
+            echo json_encode([
+                "status" => "success",
+                "message" => "Inscription réussie",
+                "mail_status" => $mail_sent ? "Envoyé" : "Erreur configuration serveur mail"
+            ]);
+            // echo json_encode(["status" => "success", "message" => "Inscription réussie"]);
         } else {
             http_response_code(500);
             echo json_encode(["status" => "error", "message" => "Erreur BDD"]);
