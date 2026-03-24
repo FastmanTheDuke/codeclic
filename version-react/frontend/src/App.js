@@ -51,11 +51,10 @@ function Navbar({ onAdminClick }) {
             <button
               key={link.id}
               onClick={() => scrollTo(link.id)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                link.highlight
-                  ? 'bg-[#00818a] text-white hover:bg-[#005f66] shadow-md'
-                  : 'text-white/80 hover:text-white hover:bg-white/10'
-              }`}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${link.highlight
+                ? 'bg-[#00818a] text-white hover:bg-[#005f66] shadow-md'
+                : 'text-white/80 hover:text-white hover:bg-white/10'
+                }`}
             >
               {link.label}
             </button>
@@ -130,7 +129,7 @@ function HomePage({ onAdminClick }) {
     setLoading(true);
     const apiUrl = window.location.hostname === "localhost"
       ? 'http://localhost/codeclic/codeclic/version-react/api/api.php'
-      : '/api/api.php';
+      : './api/api.php';
     try {
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -441,11 +440,10 @@ function HomePage({ onAdminClick }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md text-sm ${
-                    loading
-                      ? 'bg-slate-200 cursor-not-allowed text-slate-400'
-                      : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
-                  }`}
+                  className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md text-sm ${loading
+                    ? 'bg-slate-200 cursor-not-allowed text-slate-400'
+                    : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
+                    }`}
                 >
                   {loading ? "Envoi en cours..." : "Envoyer ma demande"}
                 </button>
