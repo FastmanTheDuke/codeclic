@@ -84,7 +84,7 @@ function App() {
         </motion.div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-12 gap-16">
+      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-12 gap-16 items-start">
 
         {/* COLONNE DE GAUCHE : CONTENU DU PDF */}
         <div className="lg:col-span-7 space-y-16">
