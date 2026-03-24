@@ -57,11 +57,15 @@ try {
                 // Contenu
                 $mail->isHTML(true);
                 $mail->Subject = "Nouvelle demande d'inscription - Code-Clic";
+                
+                // Sécurisation et conversion des sauts de ligne en balises <br>
+                $messageHtml = nl2br(htmlspecialchars($data->message));
+                
                 $mail->Body = "<h3>Nouvelle inscription reçue</h3>
                                   <p><b>Nom :</b> {$data->prenom} {$data->nom}</p>
                                   <p><b>Email :</b> {$data->email}</p>
                                   <p><b>Statut :</b> {$data->statut}</p>
-                                  <p><b>Message :</b><br>{$data->message}</p>";
+                                  <p><b>Message :</b><br>{$messageHtml}</p>";
 
                 $mail->send();
                 $emailStatus = "Email envoyé";
