@@ -12,7 +12,7 @@ define('ADMIN_PASSWORD', 'codeclic2024');
 define('ADMIN_TOKEN',    'cc_7f3a9b2e1d4c8f5a6e0b3d7c2a1f9e4b8d6c3a2');
 
 // --- CORS ---
-$allowed = ['http://localhost:3000', 'https://votre-domaine.fr'];
+$allowed = ['http://localhost:3000', 'http://localhost:3001', 'https://md101.io', 'https://codeclic.fr'];
 $origin  = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, $allowed)) {
     header("Access-Control-Allow-Origin: $origin");
