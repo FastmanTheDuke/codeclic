@@ -170,11 +170,14 @@ function App() {
 
         {/* COLONNE DE DROITE : FORMULAIRE */}
         <div className="lg:col-span-5 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="sticky top-10 bg-white p-8 lg:p-10 rounded-[2.5rem] shadow-2xl border border-slate-100"
+          {/* Le formulaire devient l'élément animé ET sticky */}
+          <motion.form
+            variants={fadeUpVariant}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            onSubmit={handleSubmit}
+            className="sticky top-10 bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-100"
           >
             <h3 className="text-2xl font-bold mb-8 text-slate-800 flex items-center gap-3">
               📝 Candidature
@@ -221,7 +224,7 @@ function App() {
             <p className="mt-8 text-center text-sm text-slate-500 font-medium">
               Besoin d'aide ? <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] hover:underline">codeclic@univ-lyon1.fr</a>
             </p>
-          </motion.div>
+          </motion.form>
         </div>
       </main>
 
