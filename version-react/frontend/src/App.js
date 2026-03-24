@@ -74,13 +74,13 @@ function App() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, type: "spring" }}
-          className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-80 hover:opacity-100 transition-opacity mb-16">
+          className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-80 hover:opacity-100 transition-opacity mb-10">
           {/* Logos dynamiques basés sur tes fichiers */}
           <img src={logoLyon1} alt="Lyon 1" className="h-16 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
           <img src={logoHCL} alt="HCL" className="h-16 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
           <img src={logoMD101} alt="MD101" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-          <span className="font-semibold text-white">présentent</span>
         </motion.div>
+        <span className="font-semibold text-white mb-20">présentent</span>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
