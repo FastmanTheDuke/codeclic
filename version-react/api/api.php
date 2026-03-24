@@ -41,6 +41,15 @@ try {
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
+                // Contournement du problème de certificat SSL en local (Windows/XAMPP)
+                $mail->SMTPOptions = array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+
                 // Destinataires
                 $mail->setFrom('no-reply@mdxp.io', 'Code-Clic Plateforme');
                 $mail->addAddress('support@mdxp.io'); // Email de réception
