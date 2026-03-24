@@ -28,7 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // --- Auth helpers ---
 function getToken(): string {
+    // $_SERVER['HTTP_AUTHORIZATION'] n'est pas toujours transmis par Apache
     $h = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    if (!$h) {
+        $all = function_exists('getallheaders') ? getallheaders() : [];
+        $h   = $all['Authorization'] ?? $all['authorization'] ?? '';
+    }
     if (preg_match('/^Bearer\s+(.+)$/i', $h, $m)) {
         return $m[1];
     }
