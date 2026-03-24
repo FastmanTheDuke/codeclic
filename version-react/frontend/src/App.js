@@ -84,7 +84,7 @@ function App() {
         </motion.div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-12 gap-16 items-start">
+      <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-12 gap-16">
 
         {/* COLONNE DE GAUCHE : CONTENU DU PDF */}
         <div className="lg:col-span-7 space-y-16">
@@ -169,7 +169,7 @@ function App() {
         </div>
 
         {/* COLONNE DE DROITE : FORMULAIRE */}
-        <div className="lg:col-span-5 lg:sticky lg:top-8">
+        <div className="lg:col-span-5 relative">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
