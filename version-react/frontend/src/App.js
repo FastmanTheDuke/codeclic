@@ -79,8 +79,11 @@ function App() {
           <img src={logoLyon1} alt="Lyon 1" className="h-16 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
           <img src={logoHCL} alt="HCL" className="h-16 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
           <img src={logoMD101} alt="MD101" className="h-12 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+          <h2 className="text-xl md:text-2xl font-light text-white/90 tracking-wide">
+            <span className="font-semibold text-white mb-20">présentent</span>
+          </h2>
         </motion.div>
-        <span className="font-semibold text-white mb-20">présentent</span>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
