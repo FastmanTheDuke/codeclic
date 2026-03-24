@@ -66,7 +66,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-[#00818a] selection:text-white overflow-hidden">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-[#00818a] selection:text-white ">
 
       {/* HEADER AVEC LOGO */}
       <header className="bg-white py-12 px-6 text-center shadow-sm border-b border-slate-200">
@@ -214,7 +214,7 @@ function App() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md ${loading ? 'bg-slate-300 cursor-not-allowed' : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
+                  className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md ${loading ? 'bg-slate-300 cursor-not-allowed text-slate-500' : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
                     }`}
                 >
                   {loading ? "Envoi en cours..." : "S'inscrire"}
