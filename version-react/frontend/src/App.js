@@ -83,7 +83,19 @@ function App() {
           </h2>
         </motion.div>
       </header>
-
+      <header className="bg-gradient-to-br from-[#355c74] to-[#2c3e50] py-12 px-6 text-center shadow-md border-b border-[#355c74]/20">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, type: "spring" }}
+          className="flex flex-col items-center justify-center"
+        >
+          <img src={logoCodeClic} alt="Logo Code-Clic" className="h-32 md:h-40 object-contain mb-6 drop-shadow-lg brightness-0 invert" />
+          <h2 className="text-xl md:text-2xl font-light text-white/90 tracking-wide">
+            Une formation professionnelle à la <span className="font-semibold text-white">conception d'outils numériques en santé</span>
+          </h2>
+        </motion.div>
+      </header>
       <main className="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-12 gap-16">
 
         {/* COLONNE DE GAUCHE : CONTENU DU PDF */}
