@@ -69,28 +69,14 @@ function App() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-[#00818a] selection:text-white ">
 
       {/* HEADER AVEC LOGO */}
-      <header className="bg-white py-12 px-6 text-center shadow-sm border-b border-slate-200">
+      <header className="bg-gradient-to-br from-[#12b5be] to-[#2c3e50] py-12 px-6 text-center shadow-md border-b border-[#355c74]/20">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, type: "spring" }}
           className="flex flex-col items-center justify-center"
         >
-          {/* Remplacement du texte par le logo */}
           <img src={logoCodeClic} alt="Logo Code-Clic" className="h-32 md:h-40 object-contain mb-6 drop-shadow-lg" />
-          <h2 className="text-xl md:text-2xl font-light text-slate-600 tracking-wide">
-            Une formation professionnelle à la <span className="font-semibold text-[#00818a]">conception d'outils numériques en santé</span>
-          </h2>
-        </motion.div>
-      </header>
-      <header className="bg-gradient-to-br from-[#355c74] to-[#2c3e50] py-12 px-6 text-center shadow-md border-b border-[#355c74]/20">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, type: "spring" }}
-          className="flex flex-col items-center justify-center"
-        >
-          <img src={logoCodeClic} alt="Logo Code-Clic" className="h-32 md:h-40 object-contain mb-6 drop-shadow-lg brightness-0 invert" />
           <h2 className="text-xl md:text-2xl font-light text-white/90 tracking-wide">
             Une formation professionnelle à la <span className="font-semibold text-white">conception d'outils numériques en santé</span>
           </h2>
@@ -246,7 +232,7 @@ function App() {
       </main>
 
       {/* FOOTER PARTENAIRES */}
-      <footer className="bg-white border-t border-slate-200 pt-16 pb-8 px-6">
+      <footer className="bg-gradient-to-br from-[#12b5be] to-[#2c3e50] border-t border-slate-200 pt-16 pb-8 px-6 shadow-md">
         <div className="max-w-6xl mx-auto text-center">
           <h4 className="text-slate-400 text-sm font-black uppercase tracking-[0.2em] mb-12">Partenariat de la formation</h4>
 
