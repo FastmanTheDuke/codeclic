@@ -167,65 +167,70 @@ function App() {
           </motion.section>
 
         </div>
-
-        {/* COLONNE DE DROITE : FORMULAIRE */}
+        {/* SECTION FORMULAIRE : Sticky au défilement */}
+        {/* SECTION DROITE : Le formulaire devient l'élément sticky et animé */}
         <div className="lg:col-span-5 relative">
-          {/* Le formulaire devient l'élément animé ET sticky */}
-          <motion.form
+          <motion.div
             variants={fadeUpVariant}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            onSubmit={handleSubmit}
             className="sticky top-10 bg-white p-8 rounded-[2rem] shadow-2xl border border-slate-100"
           >
-            <h3 className="text-2xl font-bold mb-8 text-slate-800 flex items-center gap-3">
-              📝 Candidature
+            <h3 className="text-2xl font-bold mb-6 text-slate-800 text-center uppercase tracking-wider">
+              Inscription
             </h3>
 
             {sent ? (
-              <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center py-16 bg-green-50 rounded-3xl border border-green-100">
-                <div className="text-6xl mb-4">✅</div>
-                <h4 className="text-green-800 font-bold text-xl uppercase tracking-wider mb-2">Inscription envoyée !</h4>
-                <p className="text-green-600">Nous vous recontacterons très prochainement.</p>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-10 bg-green-50 rounded-2xl text-green-700 font-bold uppercase tracking-widest"
+              >
+                ✅ Demande transmise !
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-2 gap-5">
-                  <input type="text" placeholder="Prénom" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-[#00818a] transition-all"
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <input type="text" placeholder="Prénom" required className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]"
                     onChange={(e) => setFormData({ ...formData, prenom: e.target.value })} />
-                  <input type="text" placeholder="Nom" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-[#00818a] transition-all"
+                  <input type="text" placeholder="Nom" required className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]"
                     onChange={(e) => setFormData({ ...formData, nom: e.target.value })} />
                 </div>
 
-                <input type="email" placeholder="Email professionnel" required className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-[#00818a] transition-all"
+                <input type="email" placeholder="Email professionnel" required className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]"
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
 
-                <select className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:bg-white focus:ring-2 focus:ring-[#00818a] transition-all text-slate-600"
+                <select className="w-full p-4 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a]"
                   onChange={(e) => setFormData({ ...formData, statut: e.target.value })}>
                   <option value="salarie">Salarié / Alternant / Jeune diplômé</option>
                   <option value="demandeur">Demandeur d'emploi</option>
-                  <option value="autre">Secteurs Public ou Privé</option>
+                  <option value="autre">Secteur Public ou Privé</option>
                 </select>
 
-                <textarea placeholder="Décrivez votre besoin métier ou projet..." className="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl h-32 outline-none focus:bg-white focus:ring-2 focus:ring-[#00818a] transition-all resize-none"
+                <textarea placeholder="Votre besoin ou projet terrain..." className="w-full p-4 bg-slate-50 rounded-xl h-24 outline-none focus:ring-2 focus:ring-[#00818a]"
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}></textarea>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`w-full py-5 rounded-2xl font-bold transition-all uppercase tracking-widest shadow-lg ${loading ? 'bg-slate-300 cursor-not-allowed text-slate-500 shadow-none' : 'bg-[#00818a] text-white hover:bg-[#005f66] hover:shadow-[#00818a]/30 active:scale-[0.98]'}`}
+                  className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md ${loading ? 'bg-slate-300 cursor-not-allowed' : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
+                    }`}
                 >
-                  {loading ? "Envoi en cours..." : "Valider ma demande"}
+                  {loading ? "Envoi en cours..." : "S'inscrire"}
                 </button>
               </form>
             )}
-
+            <p className="mt-6 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">
+              Certifié Qualiopi / DPC
+            </p>
             <p className="mt-8 text-center text-sm text-slate-500 font-medium">
               Besoin d'aide ? <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] hover:underline">codeclic@univ-lyon1.fr</a>
             </p>
-          </motion.form>
+          </motion.div>
         </div>
+
+
       </main>
 
       {/* FOOTER PARTENAIRES */}
