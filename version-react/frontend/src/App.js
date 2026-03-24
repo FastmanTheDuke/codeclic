@@ -169,7 +169,7 @@ function App() {
         </div>
 
         {/* COLONNE DE DROITE : FORMULAIRE */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 lg:sticky">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
