@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 try {
-    $pdo  = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8", DB_USER, DB_PASS);
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8", DB_USER, DB_PASS);
     $data = json_decode(file_get_contents("php://input"));
 
     if (!empty($data->email) && !empty($data->nom)) {
-        $sql  = "INSERT INTO inscriptions_codeclic (nom, prenom, email, statut, message) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO inscriptions_codeclic (nom, prenom, email, statut, message) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
 
         if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
@@ -34,31 +34,35 @@ try {
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
-                $mail->Host       = MAIL_SMTP_HOST;
-                $mail->SMTPAuth   = true;
-                $mail->Username   = MAIL_USER;
-                $mail->Password   = MAIL_PASS;
+                $mail->Host = MAIL_SMTP_HOST;
+                $mail->SMTPAuth = true;
+                $mail->Username = MAIL_USER;
+                $mail->Password = MAIL_PASS;
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port       = MAIL_SMTP_PORT;
+                $mail->Port = MAIL_SMTP_PORT;
 
                 if (APP_ENV === 'local') {
                     $mail->SMTPOptions = [
                         'ssl' => [
-                            'verify_peer'       => false,
-                            'verify_peer_name'  => false,
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
                             'allow_self_signed' => true,
                         ],
                     ];
                 }
 
                 $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
-                $mail->addAddress(MAIL_TO);
+                $emails = explode(";", MAIL_TO);
+                foreach ($emails as $email) {
+                    $mail->addAddress($email);
+                }
 
+                $mail->AddAddress("adresse1@orange.fr");
                 $mail->isHTML(true);
                 $mail->Subject = "Nouvelle demande d'inscription - Code-Clic";
 
                 $messageHtml = nl2br(htmlspecialchars($data->message));
-                $mail->Body  = "<h3>Nouvelle inscription reçue</h3>
+                $mail->Body = "<h3>Nouvelle inscription reçue</h3>
                                 <p><b>Nom :</b> {$data->prenom} {$data->nom}</p>
                                 <p><b>Email :</b> {$data->email}</p>
                                 <p><b>Statut :</b> {$data->statut}</p>
@@ -71,7 +75,7 @@ try {
             }
 
             echo json_encode([
-                "status"  => "success",
+                "status" => "success",
                 "message" => "Inscription réussie",
                 "debug_mail" => $emailStatus,
             ]);
