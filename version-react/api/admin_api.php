@@ -10,6 +10,8 @@ require 'config.php';
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 if (in_array($origin, CORS_ORIGINS)) {
     header("Access-Control-Allow-Origin: $origin");
+} else {
+    header("Access-Control-Allow-Origin: *");
 }
 header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
@@ -21,12 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // --- Auth helpers ---
-function getToken(): string {
+function getToken(): string
+{
     // $_SERVER['HTTP_AUTHORIZATION'] n'est pas toujours transmis par Apache
     $h = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
     if (!$h) {
         $all = function_exists('getallheaders') ? getallheaders() : [];
-        $h   = $all['Authorization'] ?? $all['authorization'] ?? '';
+        $h = $all['Authorization'] ?? $all['authorization'] ?? '';
     }
     if (preg_match('/^Bearer\s+(.+)$/i', $h, $m)) {
         return $m[1];
@@ -34,7 +37,8 @@ function getToken(): string {
     return '';
 }
 
-function requireAuth(): void {
+function requireAuth(): void
+{
     if (getToken() !== ADMIN_TOKEN) {
         http_response_code(401);
         echo json_encode(['error' => 'Non autorisé']);
@@ -43,12 +47,14 @@ function requireAuth(): void {
 }
 
 // --- DB ---
-function db(): PDO {
+function db(): PDO
+{
     static $pdo;
     if (!$pdo) {
         $pdo = new PDO(
             'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8',
-            DB_USER, DB_PASS,
+            DB_USER,
+            DB_PASS,
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
     }
@@ -57,7 +63,7 @@ function db(): PDO {
 
 // --- Router ---
 $method = $_SERVER['REQUEST_METHOD'];
-$body   = json_decode(file_get_contents('php://input'), true) ?? [];
+$body = json_decode(file_get_contents('php://input'), true) ?? [];
 $action = $_GET['action'] ?? $body['action'] ?? '';
 
 try {
@@ -90,7 +96,7 @@ try {
 
     // GET ?action=stats
     if ($method === 'GET' && $action === 'stats') {
-        $pdo   = db();
+        $pdo = db();
         $total = (int) $pdo->query('SELECT COUNT(*) FROM inscriptions_codeclic')->fetchColumn();
 
         $lastWeek = (int) $pdo
@@ -107,7 +113,7 @@ try {
         }
 
         echo json_encode([
-            'total'     => $total,
+            'total' => $total,
             'last_week' => $lastWeek,
             'by_statut' => $byStatut,
         ]);

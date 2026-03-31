@@ -5,11 +5,11 @@ const TOKEN_KEY = 'codeclic_admin_token';
 
 const API_URL = window.location.hostname === 'localhost'
   ? 'http://localhost/codeclic/codeclic/version-react/api/admin_api.php'
-  : '/api/admin_api.php';
+  : './api/admin_api.php';
 
 const EXPORT_URL = window.location.hostname === 'localhost'
   ? 'http://localhost/codeclic/codeclic/version-react/api/export.php'
-  : '/api/export.php';
+  : './api/export.php';
 
 // --- Stat card ---
 function StatCard({ icon, label, value, color, delay = 0 }) {
@@ -103,11 +103,10 @@ function LoginScreen({ onLogin }) {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3.5 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${
-              loading
+            className={`w-full py-3.5 rounded-xl font-bold uppercase tracking-widest text-sm transition-all ${loading
                 ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                 : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
-            }`}
+              }`}
           >
             {loading ? 'Connexion...' : 'Se connecter'}
           </button>
