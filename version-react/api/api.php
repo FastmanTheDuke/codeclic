@@ -2,9 +2,15 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php'; // Charge PHPMailer via Composer
+require 'vendor/autoload.php';
+require 'config.php';
 
-header("Access-Control-Allow-Origin: http://localhost:3000");
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, CORS_ORIGINS)) {
+    header("Access-Control-Allow-Origin: $origin");
+} else {
+    header("Access-Control-Allow-Origin: *");
+}
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Accept");
 header("Content-Type: application/json; charset=UTF-8");
@@ -14,17 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-$host = "localhost";
-$dbname = "codeclic";
-$user = "root";
-$pass = "";
-
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo  = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8", DB_USER, DB_PASS);
     $data = json_decode(file_get_contents("php://input"));
 
     if (!empty($data->email) && !empty($data->nom)) {
-        $sql = "INSERT INTO inscriptions_codeclic (nom, prenom, email, statut, message) VALUES (?, ?, ?, ?, ?)";
+        $sql  = "INSERT INTO inscriptions_codeclic (nom, prenom, email, statut, message) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
 
         if ($stmt->execute([$data->nom, $data->prenom, $data->email, $data->statut, $data->message])) {
@@ -32,17 +33,47 @@ try {
             // --- ENVOI DE L'EMAIL VIA PHPMAILER ---
             $mail = new PHPMailer(true);
             try {
-                // Paramètres du serveur (Exemple Mailtrap ou Gmail)
+                $mail->isSMTP();
+                $mail->Host       = MAIL_SMTP_HOST;
+                $mail->SMTPAuth   = true;
+                $mail->Username   = MAIL_USER;
+                $mail->Password   = MAIL_PASS;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = MAIL_SMTP_PORT;
 
+                if (APP_ENV === 'local') {
+                    $mail->SMTPOptions = [
+                        'ssl' => [
+                            'verify_peer'       => false,
+                            'verify_peer_name'  => false,
+                            'allow_self_signed' => true,
+                        ],
+                    ];
+                }
+
+                $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+                $mail->addAddress(MAIL_TO);
+
+                $mail->isHTML(true);
+                $mail->Subject = "Nouvelle demande d'inscription - Code-Clic";
+
+                $messageHtml = nl2br(htmlspecialchars($data->message));
+                $mail->Body  = "<h3>Nouvelle inscription reçue</h3>
+                                <p><b>Nom :</b> {$data->prenom} {$data->nom}</p>
+                                <p><b>Email :</b> {$data->email}</p>
+                                <p><b>Statut :</b> {$data->statut}</p>
+                                <p><b>Message :</b><br>{$messageHtml}</p>";
+
+                $mail->send();
                 $emailStatus = "Email envoyé";
             } catch (Exception $e) {
                 $emailStatus = "Erreur email : {$mail->ErrorInfo}";
             }
 
             echo json_encode([
-                "status" => "success",
+                "status"  => "success",
                 "message" => "Inscription réussie",
-                "debug_mail" => $emailStatus
+                "debug_mail" => $emailStatus,
             ]);
         } else {
             http_response_code(500);
