@@ -7,3 +7,15 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
 }
+
+.h-lyon {
+  height: 6rem;
+}
+
+.h-hcl {
+  height: 6rem;
+}
+
+.h-md101 {
+  height: 4rem;
+}

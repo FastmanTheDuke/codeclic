@@ -4,7 +4,13 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(gh --version)",
       "Bash(gh pr:*)",
-      "Bash(gh auth:*)"
+      "Bash(gh auth:*)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(where jq:*)",
+      "Bash(node -e \"console.log\\(process.execPath\\)\")",
+      "Bash(node \"C:/xampp/htdocs/codeclic/codeclic/version-react/.claude/fix-curly-quotes.js\")",
+      "Bash(node -e \"const s=require\\(''C:/xampp/htdocs/codeclic/codeclic/version-react/.claude/settings.json''\\);const h=s.hooks.PostToolUse[0].hooks[0];console.log\\(''type:'',h.type\\);console.log\\(''command:'',h.command\\);console.log\\(''JSON valide OK''\\);\")"
     ]
   }
 }

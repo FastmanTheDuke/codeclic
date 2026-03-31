@@ -6,6 +6,10 @@ import logoCodeClic from './images/Logo-CODECLIC.png';
 import logoLyon1 from './images/Logo-Lyon1-Université-Claude-BERNARD.png';
 import logoHCL from './images/Logo-HCL-Hospices-Civils-de-Lyon.jpg';
 import logoMD101 from './images/Logo-MD101.png';
+import logoGCSH from './images/Logo-GCS-houraa.jpg';
+import logoGCSARA from './images/Logo-gcs-ara.jpg';
+import logoESL from './images/Logo-ecole-de-sante-de-Lyon.jpg';
+
 
 const icons = ["🎤", "🩺", "💡", "🛠️", "🤝"];
 
@@ -102,7 +106,7 @@ function Navbar({ onAdminClick }) {
 
 // --- Home Page ---
 function HomePage({ onAdminClick }) {
-  const [formData, setFormData] = useState({ nom: '', prenom: '', email: '', statut: 'salarie', message: '' });
+  const [formData, setFormData] = useState({ nom: '', prenom: '', email: '', statut: 'Salarié secteur public', message: '', autreStatut: '' });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -134,7 +138,12 @@ function HomePage({ onAdminClick }) {
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          statut: formData.statut === 'Autre' && formData.autreStatut.trim()
+            ? `Autre : ${formData.autreStatut.trim()}`
+            : formData.statut,
+        }),
       });
       const result = await response.json();
       if (response.ok && result.status === "success") {
@@ -161,12 +170,9 @@ function HomePage({ onAdminClick }) {
           transition={{ duration: 0.8, type: "spring" }}
           className="flex flex-wrap justify-center items-center gap-12 lg:gap-20 opacity-80 hover:opacity-100 transition-opacity mb-10"
         >
-          <img src={logoLyon1} alt="Lyon 1" className="h-16 object-contain" />
-          <img src={logoHCL} alt="HCL" className="h-16 object-contain" />
-          <img src={logoMD101} alt="MD101" className="h-12 object-contain" />
-          <h2 className="text-xl md:text-2xl font-light text-white/90 tracking-wide">
-            <span className="font-semibold text-white">présentent</span>
-          </h2>
+          <img src={logoLyon1} alt="Lyon 1" className="h-18 object-contain h-lyon" />
+          <img src={logoHCL} alt="HCL" className="h-18 object-contain h-hcl" />
+          <img src={logoMD101} alt="MD101" className="h-12 object-contain h-md101" />
         </motion.div>
 
         <motion.div
@@ -206,7 +212,7 @@ function HomePage({ onAdminClick }) {
             { value: '2', unit: 'demi-journées', label: 'de formation' },
             { value: '5', unit: 'modules', label: 'pratiques' },
             { value: '100%', unit: 'certifié', label: 'Qualiopi / DPC' },
-            { value: 'Lyon', unit: '+ distanciel', label: 'La Doua & HCL' },
+            { value: 'Lyon', unit: '+ distanciel', label: 'Campus La Doua & HCL' },
           ].map((item, i) => (
             <motion.div
               key={i}
@@ -244,7 +250,7 @@ function HomePage({ onAdminClick }) {
               </li>
               <li className="flex gap-4">
                 <span className="mt-1 w-6 h-6 rounded-full bg-[#00818a]/10 text-[#00818a] flex items-center justify-center font-bold text-sm flex-shrink-0">3</span>
-                <span>Mobiliser l'écosystème régional : École de e-santé de Lyon (UCBL1), HCL, GCS HOURAA, ARS-ARA, GCS Sara, Pôles de compétitivité</span>
+                <span>Mobiliser l'écosystème régional : École de e-santé de Lyon (UCBL1), HCL, GCS HOURAA, ARS-ARA, GCS Sara, Clusters, Pôles de compétitivité</span>
               </li>
             </ul>
           </motion.section>
@@ -268,9 +274,12 @@ function HomePage({ onAdminClick }) {
             <motion.section variants={fadeUpVariant} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}>
               <h2 className="text-2xl font-bold text-[#00818a] mb-4">👥 Publics concernés</h2>
               <ul className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 space-y-3 text-slate-600">
-                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Salariés, jeunes diplômés et alternants</li>
-                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Demandeurs d'emploi</li>
-                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Secteurs public et privé</li>
+                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Salarié secteur public</li>
+                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Salarié secteur privé</li>
+                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Alternant</li>
+                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Demandeur d'emploi</li>
+                <li className="flex items-center gap-3"><span className="text-[#00818a]">✓</span> Autre</li>
+
               </ul>
             </motion.section>
 
@@ -317,7 +326,7 @@ function HomePage({ onAdminClick }) {
 
             <div className="mt-10 pt-6 border-t border-white/20 flex flex-col md:flex-row justify-between items-center text-sm font-medium gap-4">
               <div className="flex items-center gap-2"><span className="text-2xl">⏱️</span> 2 demi-journées</div>
-              <div className="flex items-center gap-2"><span className="text-2xl">📍</span> Présentiel (La Doua / HCL) + Distanciel</div>
+              <div className="flex items-center gap-2"><span className="text-2xl">📍</span> Présentiel (Campus La Doua / HCL) + Distanciel</div>
             </div>
           </motion.section>
 
@@ -331,7 +340,7 @@ function HomePage({ onAdminClick }) {
                 { icon: '📅', title: 'Durée', desc: '2 demi-journées de formation intensive' },
                 { icon: '📍', title: 'Lieu', desc: 'Campus La Doua (UCBL) & Hospices Civils de Lyon — également en distanciel' },
                 { icon: '🎓', title: 'Certification', desc: 'Certificat de réalisation Qualiopi / DPC remis à l\'issue de la formation' },
-                { icon: '👤', title: 'Pré-requis', desc: 'Ouvert à tous les professionnels de santé et du numérique, sans pré-requis technique' },
+                { icon: '👤', title: 'Pré-requis', desc: 'Ouvert à tous les professionnels de santé et du numérique, sans pré-requis' },
                 { icon: '💰', title: 'Financement', desc: 'Prise en charge possible via OPCO, CPF ou financements publics selon votre statut' },
                 { icon: '📬', title: 'Contact', desc: (<a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] hover:underline font-medium">codeclic@univ-lyon1.fr</a>) },
               ].map((item, i) => (
@@ -420,90 +429,115 @@ function HomePage({ onAdminClick }) {
                   <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Statut</label>
                   <select
                     className="w-full p-3.5 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a] text-slate-700"
-                    onChange={(e) => setFormData({ ...formData, statut: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, statut: e.target.value, autreStatut: '' })}
                   >
-                    <option value="salarie">Salarié / Alternant / Jeune diplômé</option>
-                    <option value="demandeur">Demandeur d'emploi</option>
-                    <option value="autre">Secteur Public ou Privé</option>
+                    <option value="Salarié secteur public">Salarié secteur public</option>
+                    <option value="Salarié secteur privé">Salarié secteur privé</option>
+                    <option value="Alternant">Alternant</option>
+                    <option value="Demandeur d'emploi">Demandeur d'emploi</option>
+                    <option value="Autre">Autre : préciser</option>
                   </select>
                 </div>
 
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Votre besoin ou projet</label>
-                  <textarea
-                    placeholder="Décrivez votre contexte ou projet terrain..."
-                    className="w-full p-3.5 bg-slate-50 rounded-xl h-24 outline-none focus:ring-2 focus:ring-[#00818a] text-slate-800 placeholder-slate-300 resize-none"
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  />
-                </div>
+                <AnimatePresence>
+                  {formData.statut === 'Autre' && (
+                    <motion.div
+                      key="autre-statut"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="overflow-hidden"
+                    >
+                      <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Précisez votre statut</label>
+                      <input
+                        type="text"
+                        placeholder="Ex : Étudiant en médecine, Chercheur..."
+                        className="w-full p-3.5 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a] text-slate-800 placeholder-slate-300"
+                        value={formData.autreStatut}
+                        onChange={(e) => setFormData({ ...formData, autreStatut: e.target.value })}
+                      />
+                    </motion.div>
+            )}
+          </AnimatePresence>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md text-sm ${loading
-                    ? 'bg-slate-200 cursor-not-allowed text-slate-400'
-                    : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
-                    }`}
-                >
-                  {loading ? "Envoi en cours..." : "Envoyer ma demande"}
-                </button>
-              </form>
+          <div>
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Votre besoin ou projet</label>
+            <textarea
+              placeholder="Décrivez votre contexte ou projet terrain..."
+              className="w-full p-3.5 bg-slate-50 rounded-xl h-24 outline-none focus:ring-2 focus:ring-[#00818a] text-slate-800 placeholder-slate-300 resize-none"
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md text-sm ${loading
+              ? 'bg-slate-200 cursor-not-allowed text-slate-400'
+              : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
+              }`}
+          >
+            {loading ? "Envoi en cours..." : "Envoyer ma demande"}
+          </button>
+        </form>
             )}
 
-            <div className="mt-6 pt-6 border-t border-slate-100 text-center space-y-2">
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Certifié Qualiopi / DPC</p>
-              <p className="text-sm text-slate-500">
-                Questions ? <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] hover:underline font-medium">codeclic@univ-lyon1.fr</a>
-              </p>
-            </div>
-          </motion.div>
+        <div className="mt-6 pt-6 border-t border-slate-100 text-center space-y-2">
+          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Certifié Qualiopi / DPC</p>
+          <p className="text-sm text-slate-500">
+            Questions ? <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] hover:underline font-medium">codeclic@univ-lyon1.fr</a>
+          </p>
         </div>
-
-      </main>
-
-      {/* FOOTER */}
-      <footer className="bg-gradient-to-br from-[#12b5be] to-[#2c3e50] pt-16 pb-8 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <img src={logoCodeClic} alt="Code-Clic" className="h-16 object-contain mx-auto mb-4 opacity-90" />
-            <p className="text-white/60 text-sm max-w-md mx-auto">
-              Formation professionnelle à la conception d'outils numériques en santé
-            </p>
-          </div>
-
-          <div className="mb-12">
-            <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] text-center mb-8">Partenariat de la formation</h4>
-            <div className="flex flex-wrap justify-center items-center gap-10 lg:gap-16 opacity-70 hover:opacity-100 transition-opacity">
-              <img src={logoLyon1} alt="Lyon 1" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-              <img src={logoHCL} alt="HCL" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-              <img src={logoMD101} alt="MD101" className="h-10 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-              <span className="font-bold text-lg text-white/50 hover:text-white transition-colors">Include</span>
-              <span className="font-bold text-lg text-white/50 hover:text-white transition-colors">ARS ARA</span>
-              <span className="font-bold text-lg text-white/50 hover:text-white transition-colors">GCS SARA</span>
-            </div>
-          </div>
-
-          <div className="border-t border-white/10 pt-8">
-            <p className="text-xs text-white/40 uppercase tracking-wider font-semibold text-center mb-4">Ce projet a été soutenu par</p>
-            <div className="flex flex-wrap justify-center gap-8 text-xs font-bold text-white/60 uppercase tracking-wider">
-              <span>Préfète de la région Auvergne-Rhône-Alpes</span>
-              <span>France 2030</span>
-              <span>La Région Auvergne-Rhône-Alpes</span>
-            </div>
-          </div>
-
-          <div className="mt-8 text-center">
-            <button
-              onClick={onAdminClick}
-              className="text-white/10 hover:text-white/30 text-xs transition-colors select-none"
-              title="Administration"
-            >
-              ·
-            </button>
-          </div>
-        </div>
-      </footer>
+      </motion.div>
     </div>
+
+      </main >
+
+    {/* FOOTER */ }
+    < footer className = "bg-gradient-to-br from-[#12b5be] to-[#2c3e50] pt-16 pb-8 px-6" >
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <img src={logoCodeClic} alt="Code-Clic" className="h-16 object-contain mx-auto mb-4 opacity-90" />
+          <p className="text-white/60 text-sm max-w-md mx-auto">
+            Formation professionnelle à la conception d'outils numériques en santé
+          </p>
+        </div>
+
+        <div className="mb-12">
+          <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] text-center mb-8">Partenaires de la formation</h4>
+          <div className="flex flex-wrap justify-center items-center gap-10 lg:gap-16 opacity-70 hover:opacity-100 transition-opacity">
+            <img src={logoLyon1} alt="Lyon 1" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+            <img src={logoHCL} alt="HCL" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+            <img src={logoMD101} alt="MD101" className="h-10 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+            <img src={logoGCSH} alt="Lyon 1" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+            <img src={logoGCSARA} alt="HCL" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+            <img src={logoESL} alt="MD101" className="h-10 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+
+          </div>
+        </div>
+
+        <div className="border-t border-white/10 pt-8">
+          <p className="text-xs text-white/40 uppercase tracking-wider font-semibold text-center mb-4">Ce projet a été soutenu par</p>
+          <div className="flex flex-wrap justify-center gap-8 text-xs font-bold text-white/60 uppercase tracking-wider">
+            <span>Préfète de la région Auvergne-Rhône-Alpes</span>
+            <span>France 2030</span>
+            <span>La Région Auvergne-Rhône-Alpes</span>
+          </div>
+        </div>
+
+        <div className="mt-8 text-center">
+          <button
+            onClick={onAdminClick}
+            className="text-white/10 hover:text-white/30 text-xs transition-colors select-none"
+            title="Administration"
+          >
+            ·
+          </button>
+        </div>
+      </div>
+      </footer >
+    </div >
   );
 }
 
