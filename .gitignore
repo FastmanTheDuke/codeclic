@@ -20,6 +20,10 @@ version-react/frontend/.env.development.local
 version-react/frontend/.env.test.local
 version-react/frontend/.env.production.local
 
+# --- Claude Code worktrees (ne jamais commiter) ---
+version-react/.claude/worktrees/
+.claude/worktrees/
+
 # --- OS & éditeurs ---
 .DS_Store
 Thumbs.db
