@@ -5,12 +5,15 @@
       "Bash(gh --version)",
       "Bash(gh pr:*)",
       "Bash(gh auth:*)",
-      "Skill(update-config)",
-      "Skill(update-config:*)",
-      "Bash(where jq:*)",
-      "Bash(node -e \"console.log\\(process.execPath\\)\")",
-      "Bash(node \"C:/xampp/htdocs/codeclic/codeclic/version-react/.claude/fix-curly-quotes.js\")",
-      "Bash(node -e \"const s=require\\(''C:/xampp/htdocs/codeclic/codeclic/version-react/.claude/settings.json''\\);const h=s.hooks.PostToolUse[0].hooks[0];console.log\\(''type:'',h.type\\);console.log\\(''command:'',h.command\\);console.log\\(''JSON valide OK''\\);\")"
+      "Bash(cmd /c \"rmdir /s /q \"\"C:\\\\xampp\\\\htdocs\\\\codeclic\\\\codeclic\\\\version-react\\\\.claude\\\\worktrees\\\\eager-gauss\"\"\")",
+      "Bash(powershell -Command \"Remove-Item -Path ''C:\\\\xampp\\\\htdocs\\\\codeclic\\\\codeclic\\\\version-react\\\\.claude\\\\worktrees\\\\eager-gauss'' -Recurse -Force -ErrorAction SilentlyContinue; if \\(Test-Path ''C:\\\\xampp\\\\htdocs\\\\codeclic\\\\codeclic\\\\version-react\\\\.claude\\\\worktrees\\\\eager-gauss''\\) { Write-Output ''still exists'' } else { Write-Output ''deleted'' }\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\\\xampp\\\\htdocs\\\\codeclic\\\\codeclic\\\\version-react\\\\.claude\\\\worktrees\\\\eager-gauss'' -Recurse | Select-Object FullName\")",
+      "Bash(powershell -Command \":*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)",
+      "Bash(git -C /c/xampp/htdocs/codeclic/codeclic ls-files version-react/.claude/)",
+      "Bash(git rm:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
