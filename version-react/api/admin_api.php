@@ -1,20 +1,14 @@
 <?php
 /**
  * admin_api.php — API d'administration Code-Clic
- *
- * ⚠️  AVANT MISE EN PRODUCTION :
- *   1. Changez ADMIN_PASSWORD par un mot de passe fort
- *   2. Changez ADMIN_TOKEN par une valeur aléatoire longue
- *   3. Restreignez l'accès à ce fichier par .htaccess si possible
+ * Les secrets sont centralisés dans config.php (non commité).
  */
 
-define('ADMIN_PASSWORD', 'codeclic2024');
-define('ADMIN_TOKEN',    'cc_7f3a9b2e1d4c8f5a6e0b3d7c2a1f9e4b8d6c3a2');
+require 'config.php';
 
 // --- CORS ---
-$allowed = ['http://localhost:3000', 'http://localhost:3001', 'https://md101.io', 'https://codeclic.fr'];
-$origin  = $_SERVER['HTTP_ORIGIN'] ?? '';
-if (in_array($origin, $allowed)) {
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, CORS_ORIGINS)) {
     header("Access-Control-Allow-Origin: $origin");
 }
 header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS');
@@ -53,8 +47,8 @@ function db(): PDO {
     static $pdo;
     if (!$pdo) {
         $pdo = new PDO(
-            'mysql:host=localhost;dbname=codeclic;charset=utf8',
-            'root', '',
+            'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8',
+            DB_USER, DB_PASS,
             [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
     }

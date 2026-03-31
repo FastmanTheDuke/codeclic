@@ -1,0 +1,28 @@
+# ============================================================
+#  .gitignore — Code-Clic
+# ============================================================
+
+# --- Fichiers de configuration sensibles (secrets) ---
+version-react/api/config.php
+
+# --- Dépendances PHP ---
+version-react/api/vendor/
+
+# --- Dépendances Node.js ---
+version-react/frontend/node_modules/
+
+# --- Build React ---
+version-react/frontend/build/
+
+# --- Variables d'environnement React ---
+version-react/frontend/.env.local
+version-react/frontend/.env.development.local
+version-react/frontend/.env.test.local
+version-react/frontend/.env.production.local
+
+# --- OS & éditeurs ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
