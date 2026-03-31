@@ -183,7 +183,7 @@ function HomePage({ onAdminClick }) {
         >
           <img src={logoCodeClic} alt="Logo Code-Clic" className="h-32 md:h-40 object-contain mb-6 drop-shadow-lg" />
           <h2 className="text-xl md:text-2xl font-light text-white/90 tracking-wide max-w-2xl">
-            Une formation professionnelle à la{' '}
+            Une formation professionnelle à la{' '}<br />
             <span className="font-semibold text-white">conception d'outils numériques en santé</span>
           </h2>
 
@@ -447,95 +447,95 @@ function HomePage({ onAdminClick }) {
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.25 }}
-                      className="overflow-hidden"
+                      className=""
                     >
                       <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Précisez votre statut</label>
-                      <input
-                        type="text"
+                      <textarea
+
                         placeholder="Ex : Étudiant en médecine, Chercheur..."
                         className="w-full p-3.5 bg-slate-50 rounded-xl outline-none focus:ring-2 focus:ring-[#00818a] text-slate-800 placeholder-slate-300"
                         value={formData.autreStatut}
                         onChange={(e) => setFormData({ ...formData, autreStatut: e.target.value })}
-                      />
+                      >Ex : Étudiant en médecine, Chercheur...</textarea>
                     </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Votre besoin ou projet</label>
+                  <textarea
+                    placeholder="Décrivez votre contexte ou projet terrain..."
+                    className="w-full p-3.5 bg-slate-50 rounded-xl h-24 outline-none focus:ring-2 focus:ring-[#00818a] text-slate-800 placeholder-slate-300 resize-none"
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md text-sm ${loading
+                    ? 'bg-slate-200 cursor-not-allowed text-slate-400'
+                    : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
+                    }`}
+                >
+                  {loading ? "Envoi en cours..." : "Envoyer ma demande"}
+                </button>
+              </form>
             )}
-          </AnimatePresence>
 
-          <div>
-            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 block">Votre besoin ou projet</label>
-            <textarea
-              placeholder="Décrivez votre contexte ou projet terrain..."
-              className="w-full p-3.5 bg-slate-50 rounded-xl h-24 outline-none focus:ring-2 focus:ring-[#00818a] text-slate-800 placeholder-slate-300 resize-none"
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-4 rounded-xl font-bold transition-all uppercase tracking-widest shadow-md text-sm ${loading
-              ? 'bg-slate-200 cursor-not-allowed text-slate-400'
-              : 'bg-[#00818a] text-white hover:bg-[#005f66] active:scale-95'
-              }`}
-          >
-            {loading ? "Envoi en cours..." : "Envoyer ma demande"}
-          </button>
-        </form>
-            )}
-
-        <div className="mt-6 pt-6 border-t border-slate-100 text-center space-y-2">
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Certifié Qualiopi / DPC</p>
-          <p className="text-sm text-slate-500">
-            Questions ? <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] hover:underline font-medium">codeclic@univ-lyon1.fr</a>
-          </p>
+            <div className="mt-6 pt-6 border-t border-slate-100 text-center space-y-2">
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Certifié Qualiopi / DPC</p>
+              <p className="text-sm text-slate-500">
+                Questions ? <a href="mailto:codeclic@univ-lyon1.fr" className="text-[#00818a] hover:underline font-medium">codeclic@univ-lyon1.fr</a>
+              </p>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
-    </div>
 
       </main >
 
-    {/* FOOTER */ }
-    < footer className = "bg-gradient-to-br from-[#12b5be] to-[#2c3e50] pt-16 pb-8 px-6" >
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <img src={logoCodeClic} alt="Code-Clic" className="h-16 object-contain mx-auto mb-4 opacity-90" />
-          <p className="text-white/60 text-sm max-w-md mx-auto">
-            Formation professionnelle à la conception d'outils numériques en santé
-          </p>
-        </div>
+      {/* FOOTER */}
+      < footer className="bg-gradient-to-br from-[#12b5be] to-[#2c3e50] pt-16 pb-8 px-6" >
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <img src={logoCodeClic} alt="Code-Clic" className="h-16 object-contain mx-auto mb-4 opacity-90" />
+            <p className="text-white/60 text-sm max-w-md mx-auto">
+              Formation professionnelle à la conception d'outils numériques en santé
+            </p>
+          </div>
 
-        <div className="mb-12">
-          <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] text-center mb-8">Partenaires de la formation</h4>
-          <div className="flex flex-wrap justify-center items-center gap-10 lg:gap-16 opacity-70 hover:opacity-100 transition-opacity">
-            <img src={logoLyon1} alt="Lyon 1" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-            <img src={logoHCL} alt="HCL" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-            <img src={logoMD101} alt="MD101" className="h-10 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-            <img src={logoGCSH} alt="Lyon 1" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-            <img src={logoGCSARA} alt="HCL" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
-            <img src={logoESL} alt="MD101" className="h-10 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+          <div className="mb-12">
+            <h4 className="text-white/50 text-xs uppercase tracking-[0.2em] text-center mb-8">Partenaires de la formation</h4>
+            <div className="flex flex-wrap justify-center items-center gap-10 lg:gap-16 opacity-70 hover:opacity-100 transition-opacity">
+              <img src={logoLyon1} alt="Lyon 1" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={logoHCL} alt="HCL" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={logoMD101} alt="MD101" className="h-10 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={logoGCSH} alt="Lyon 1" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={logoGCSARA} alt="HCL" className="h-14 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
+              <img src={logoESL} alt="MD101" className="h-10 object-contain grayscale hover:grayscale-0 transition-all duration-500" />
 
+            </div>
+          </div>
+
+          <div className="border-t border-white/10 pt-8">
+            <p className="text-xs text-white/40 uppercase tracking-wider font-semibold text-center mb-4">Ce projet a été soutenu par</p>
+            <div className="flex flex-wrap justify-center gap-8 text-xs font-bold text-white/60 uppercase tracking-wider">
+              <span>Préfète de la région Auvergne-Rhône-Alpes</span>
+              <span>France 2030</span>
+              <span>La Région Auvergne-Rhône-Alpes</span>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <button
+              onClick={onAdminClick}
+              className="text-white/10 hover:text-white/30 text-xs transition-colors select-none"
+              title="Administration"
+            >
+              ·
+            </button>
           </div>
         </div>
-
-        <div className="border-t border-white/10 pt-8">
-          <p className="text-xs text-white/40 uppercase tracking-wider font-semibold text-center mb-4">Ce projet a été soutenu par</p>
-          <div className="flex flex-wrap justify-center gap-8 text-xs font-bold text-white/60 uppercase tracking-wider">
-            <span>Préfète de la région Auvergne-Rhône-Alpes</span>
-            <span>France 2030</span>
-            <span>La Région Auvergne-Rhône-Alpes</span>
-          </div>
-        </div>
-
-        <div className="mt-8 text-center">
-          <button
-            onClick={onAdminClick}
-            className="text-white/10 hover:text-white/30 text-xs transition-colors select-none"
-            title="Administration"
-          >
-            ·
-          </button>
-        </div>
-      </div>
       </footer >
     </div >
   );
